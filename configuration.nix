@@ -2,12 +2,13 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      inputs.home-manager.nixosModules.default
     ];
 
   # Bootloader.
@@ -90,17 +91,28 @@
     ];
   };
 
+  home-manager = {
+    extraSpecialArgs = { inherit inputs; };
+    users = {
+      mrrain = import ./home.nix;
+    };
+  };
+
   # Install firefox.
   programs.firefox.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
+    git
+    vscode-fhs
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
