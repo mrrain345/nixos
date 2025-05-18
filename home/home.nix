@@ -9,6 +9,8 @@
     stateVersion = "24.11";
   };
 
+  nixpkgs.config.allowUnfree = true;
+
   programs.zsh = {
     enable = true;
     enableCompletion = true;
@@ -36,6 +38,13 @@
     noto-fonts
     noto-fonts-emoji
     fira-code
+
+    git
+    nixd
+    nil
+    nixfmt-rfc-style
+    alejandra
+    vscode.fhs
 
     nh
   ];

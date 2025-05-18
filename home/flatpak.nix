@@ -24,7 +24,6 @@
     "io.github.celluloid_player.Celluloid"
     "org.gnome.Calculator"
     "org.gnome.Calendar"
-    "org.gnome.Characters"
     "org.gnome.clocks"
     "org.gnome.Evince"
     "org.gnome.Loupe"
