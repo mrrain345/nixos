@@ -1,6 +1,13 @@
 {...}: {
   imports = [
+    ./nvidia.nix
     ./pipewire.nix
-    ./x11-gnome.nix
+    ./gnome.nix
   ];
+
+  config.modules = {
+    nvidia.enable = true;
+    pipewire.enable = true;
+    gnome.enable = true;
+  };
 }

@@ -1,7 +1,6 @@
 {pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
-    ./graphics.nix
     ./locale.nix
     ./user.nix
     ./modules/modules.nix
@@ -13,7 +12,7 @@
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;
 
-  console.keyMap = "pl2";
+  hardware.enableAllFirmware = true;
 
   services.flatpak.enable = true;
   xdg.portal.enable = true;
