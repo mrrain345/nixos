@@ -13,13 +13,6 @@
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;
 
-  nixpkgs.config.allowUnfree = true;
-
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
-
   time.timeZone = "Europe/Warsaw";
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
@@ -33,6 +26,8 @@
     LC_TELEPHONE = "pl_PL.UTF-8";
     LC_TIME = "pl_PL.UTF-8";
   };
+
+  services.flatpak.enable = true;
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
@@ -85,6 +80,11 @@
     ];
   };
 
+  home-manager = {
+    extraSpecialArgs = {inherit inputs;};
+    users.mrrain = import ./home/home.nix;
+  };
+
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
     git
@@ -95,8 +95,6 @@
     vscode.fhs
     google-chrome
   ];
-
-  nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
