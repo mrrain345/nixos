@@ -1,6 +1,7 @@
 {pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
+    ./graphics.nix
     ./locale.nix
     ./user.nix
     ./modules/modules.nix

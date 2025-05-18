@@ -51,6 +51,7 @@
 
   home.sessionVariables = {
     EDITOR = "nano";
+    NIXOS_OZONE_WL = "1";
     FLAKE = "/home/mrrain/Documents/nixos";
     NH_FLAKE = "/home/mrrain/Documents/nixos";
   };
