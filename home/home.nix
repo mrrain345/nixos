@@ -27,6 +27,7 @@
     fontconfig.defaultFonts = {
       sansSerif = ["Noto Sans"];
       serif = ["Noto Serif"];
+      emoji = ["Noto Color Emoji"];
       monospace = ["Fira Code"];
     };
   };
