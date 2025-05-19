@@ -31,4 +31,10 @@
     "org.gnome.TextEditor"
     "org.gnome.Weather"
   ];
+
+  home.file = {
+    ".local/share/applications/com.obsproject.Studio.desktop" = {
+      source = ./files/com.obsproject.Studio.desktop;
+    };
+  };
 }
