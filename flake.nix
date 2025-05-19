@@ -10,6 +10,7 @@
     };
 
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
+    stylix.url = "github:danth/stylix";
   };
 
   outputs = {
@@ -33,8 +34,9 @@
           nix.nixPath = ["nixpkgs=${nixpkgs.outPath}"];
         }
 
-        inputs.nix-flatpak.nixosModules.nix-flatpak
         inputs.home-manager.nixosModules.home-manager
+        inputs.nix-flatpak.nixosModules.nix-flatpak
+        inputs.stylix.nixosModules.stylix
 
         ./system/configuration.nix
       ];

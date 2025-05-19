@@ -1,14 +1,10 @@
-{
+{pkgs, ...}: {
   imports = [
     ./programs
     ./packages.nix
-    ./fonts.nix
     ./flatpak.nix
     ./hyprland
   ];
-
-  nixpkgs.config.allowUnfree = true;
-  programs.home-manager.enable = true;
 
   home = {
     username = "mrrain";
@@ -16,4 +12,10 @@
     stateVersion = "24.11";
     sessionPath = ["/home/mrrain/.local/bin"];
   };
+
+  nixpkgs.config.allowUnfree = true;
+  programs.home-manager.enable = true;
+
+  fonts.fontconfig.enable = true;
+  home.packages = [pkgs.font-awesome];
 }

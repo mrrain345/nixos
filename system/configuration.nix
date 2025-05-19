@@ -1,4 +1,4 @@
-{...}: {
+{pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
     ./locale.nix
@@ -14,6 +14,9 @@
 
   hardware.enableAllFirmware = true;
   services.flatpak.enable = true;
+
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
 
   system.stateVersion = "24.11";
 }
