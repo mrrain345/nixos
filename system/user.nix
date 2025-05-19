@@ -19,5 +19,7 @@
   home-manager = {
     extraSpecialArgs = {inherit inputs;};
     users.mrrain = import ../home/home.nix;
+    useUserPackages = true;
+    useGlobalPkgs = true;
   };
 }

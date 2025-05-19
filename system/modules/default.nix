@@ -1,4 +1,4 @@
-{...}: {
+{
   imports = [
     ./nvidia.nix
     ./pipewire.nix

@@ -3,7 +3,7 @@
     ./hardware-configuration.nix
     ./locale.nix
     ./user.nix
-    ./modules/modules.nix
+    ./modules
   ];
 
   boot.loader.systemd-boot.enable = true;
