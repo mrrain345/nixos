@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
   cfg = config.modules.docker;
@@ -15,6 +16,10 @@ in {
       enable = true;
       storageDriver = "btrfs";
     };
+
+    environment.systemPackages = with pkgs; [
+      docker-buildx
+    ];
 
     hardware.nvidia-container-toolkit.enable = cfg.nvidia;
   };
