@@ -15,6 +15,9 @@ in {
     services.xserver.desktopManager.gnome.enable = true;
     services.xserver.displayManager.gdm.enable = true;
 
+    xdg.portal.enable = true;
+    xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
+
     environment.systemPackages = with pkgs; [
       gnomeExtensions.dash-to-dock
     ];

@@ -4,6 +4,7 @@
     ./packages.nix
     ./fonts.nix
     ./flatpak.nix
+    ./hyprland
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -13,13 +14,6 @@
     username = "mrrain";
     homeDirectory = "/home/mrrain";
     stateVersion = "24.11";
+    sessionPath = ["/home/mrrain/.local/bin"];
   };
-
-  home.sessionVariables = {
-    NIXOS_OZONE_WL = "1";
-  };
-
-  home.sessionPath = [
-    "/home/mrrain/.local/bin"
-  ];
 }
