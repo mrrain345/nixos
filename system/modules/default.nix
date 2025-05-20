@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{
   imports = [
     ./nvidia.nix
     ./pipewire.nix
@@ -20,10 +20,5 @@
         nvidia = true;
       };
     };
-
-    programs.hyprland.enable = true;
-    environment.systemPackages = with pkgs; [
-      xdg-desktop-portal-gtk
-    ];
   };
 }

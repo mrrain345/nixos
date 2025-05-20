@@ -1,5 +1,6 @@
 {pkgs, ...}: {
   imports = [
+    ./env.nix
     ./programs
     ./packages.nix
     ./flatpak.nix

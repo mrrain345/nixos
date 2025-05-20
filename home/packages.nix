@@ -1,10 +1,14 @@
 {pkgs, ...}: {
   home.packages = with pkgs; [
-    nixd
     nil
     alejandra
     vscode.fhs
 
     nodejs
+
+    alacritty
+    nautilus
+
+    adwaita-fonts
   ];
 }

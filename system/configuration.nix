@@ -15,6 +15,9 @@
   hardware.enableAllFirmware = true;
   services.flatpak.enable = true;
 
+  programs.hyprland.enable = true;
+
+  security.polkit.enable = true;
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
 

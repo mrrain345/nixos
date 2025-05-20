@@ -1,14 +1,9 @@
 {pkgs, ...}: {
-  wayland.windowManager.hyprland.enable = true;
+  imports = [
+    ./mako.nix
+  ];
 
-  home.sessionVariables = {
-    NIXOS_OZONE_WL = "1";
-    LIBVA_DRIVER_NAME = "nvidia";
-    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-    XCURSOR_SIZE = "24";
-    HYPRCURSOR_SIZE = "24";
-    WLR_NO_HARDWARE_CURSOR = "1";
-  };
+  wayland.windowManager.hyprland.enable = true;
 
   home.pointerCursor = {
     gtk.enable = true;
@@ -17,21 +12,13 @@
     size = 16;
   };
 
-  home.packages = with pkgs; [
-    alacritty
-    gnome-console
-
-    nautilus
-
-    adwaita-fonts
-
-    mako
-    libnotify
-    rofi-wayland
-    networkmanagerapplet
-  ];
-
   programs.waybar.enable = true;
+  services.network-manager-applet.enable = true;
+
+  home.packages = with pkgs; [
+    rofi-wayland
+    hyprpolkitagent
+  ];
 
   gtk = {
     enable = true;
@@ -48,8 +35,13 @@
     "$mod" = "SUPER";
 
     monitor = [
-      "HDMI-A-4, 1920x1080, 0x0, 1"
-      "eDP-1, 1920x1080, 1920x0, 1"
+      "HDMI-A-4, 1920x1080@60, 0x0, 1"
+      "eDP-1, 1920x1080@144, 1920x0, 1"
+    ];
+
+    workspace = [
+      "1, monitor:HDMI-A-4, default:true"
+      "2, monitor:eDP-1, default:true"
     ];
 
     input = {
@@ -129,7 +121,7 @@
     ];
 
     bindr = [
-      "$mod, $mod, exec, rofi -show drun -show-icons"
+      "$mod, SUPER_L, exec, rofi -show drun -show-icons"
     ];
 
     bindl = [
@@ -147,7 +139,9 @@
     ];
 
     exec-once = [
+      "hyprctl dispatch workspace 1"
       "waybar"
+      "systemctl --user start hyprpolkitagent"
     ];
   };
 }
