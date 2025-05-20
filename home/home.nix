@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{
   imports = [
     ./env.nix
     ./programs
@@ -16,7 +16,4 @@
 
   nixpkgs.config.allowUnfree = true;
   programs.home-manager.enable = true;
-
-  fonts.fontconfig.enable = true;
-  home.packages = [pkgs.font-awesome];
 }

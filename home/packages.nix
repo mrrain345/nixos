@@ -1,8 +1,8 @@
 {pkgs, ...}: {
   home.packages = with pkgs; [
     nil
+    nixd
     alejandra
-    vscode.fhs
 
     nodejs
 

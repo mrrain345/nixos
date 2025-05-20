@@ -4,4 +4,5 @@ My NixOS configuration
 
 ## Usefull links:
 
-- [Home-Manager documentation](https://home-manager-options.extranix.com/?query=&release=master)
+- [NixOS search](https://search.nixos.org/packages?channel=unstable)
+- [Home-Manager search](https://home-manager-options.extranix.com/?query=&release=master)

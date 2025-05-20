@@ -9,7 +9,7 @@
     gtk.enable = true;
     package = pkgs.bibata-cursors;
     name = "Bibata-Modern-Classic";
-    size = 16;
+    size = 24;
   };
 
   programs.waybar.enable = true;
@@ -18,6 +18,7 @@
   home.packages = with pkgs; [
     rofi-wayland
     hyprpolkitagent
+    networkmanagerapplet
   ];
 
   gtk = {
@@ -43,6 +44,11 @@
       "1, monitor:HDMI-A-4, default:true"
       "2, monitor:eDP-1, default:true"
     ];
+
+    cursor = {
+      no_hardware_cursors = 1;
+      default_monitor = "HDMI-A-4";
+    };
 
     input = {
       kb_layout = "pl";
@@ -120,9 +126,9 @@
       "$mod, mouse:272, togglefloating"
     ];
 
-    bindr = [
-      "$mod, SUPER_L, exec, rofi -show drun -show-icons"
-    ];
+    # bindr = [
+    #   "$mod, SUPER_L, exec, rofi -show drun -show-icons"
+    # ];
 
     bindl = [
       ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
@@ -139,7 +145,7 @@
     ];
 
     exec-once = [
-      "hyprctl dispatch workspace 1"
+      # "hyprctl dispatch workspace 1"
       "waybar"
       "systemctl --user start hyprpolkitagent"
     ];

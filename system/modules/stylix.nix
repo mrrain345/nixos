@@ -7,16 +7,16 @@
 
     fonts = {
       serif = {
-        package = pkgs.noto-fonts;
-        name = "Noto Serif";
+        package = pkgs.fira-go;
+        name = "Fira Sans";
       };
       sansSerif = {
-        package = pkgs.noto-fonts;
-        name = "Noto Sans";
+        package = pkgs.fira-go;
+        name = "Fira Sans";
       };
       monospace = {
-        package = pkgs.noto-fonts;
-        name = "Noto Sans Mono";
+        package = pkgs.nerd-fonts.fira-code;
+        name = "Fira Code Nerd Font";
       };
       emoji = {
         package = pkgs.noto-fonts-emoji;
