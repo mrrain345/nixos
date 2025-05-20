@@ -4,6 +4,17 @@
   ];
 
   wayland.windowManager.hyprland.enable = true;
+  services.network-manager-applet.enable = true;
+  services.gnome-keyring.enable = true;
+  programs.waybar.enable = true;
+
+  home.packages = with pkgs; [
+    rofi-wayland
+    hyprpolkitagent
+    networkmanagerapplet
+    libsecret
+    seahorse
+  ];
 
   home.pointerCursor = {
     gtk.enable = true;
@@ -12,42 +23,34 @@
     size = 24;
   };
 
-  programs.waybar.enable = true;
-  services.network-manager-applet.enable = true;
-
-  home.packages = with pkgs; [
-    rofi-wayland
-    hyprpolkitagent
-    networkmanagerapplet
-  ];
-
+  qt.enable = true;
   gtk = {
     enable = true;
-
     iconTheme = {
       package = pkgs.adwaita-icon-theme;
       name = "Adwaita";
     };
   };
 
-  qt.enable = true;
-
-  wayland.windowManager.hyprland.settings = {
+  wayland.windowManager.hyprland.settings = let
+    monitor_primary = "HDMI-A-4";
+    monitor_secondary = "eDP-1";
+  in {
     "$mod" = "SUPER";
 
     monitor = [
-      "HDMI-A-4, 1920x1080@60, 0x0, 1"
-      "eDP-1, 1920x1080@144, 1920x0, 1"
+      "${monitor_primary}, 1920x1080@60, 0x0, 1"
+      "${monitor_secondary}, 1920x1080@144, 1920x0, 1"
     ];
 
     workspace = [
-      "1, monitor:HDMI-A-4, default:true"
-      "2, monitor:eDP-1, default:true"
+      "1, monitor:${monitor_primary}, default:true"
+      "2, monitor:${monitor_secondary}, default:true"
     ];
 
     cursor = {
       no_hardware_cursors = 1;
-      default_monitor = "HDMI-A-4";
+      default_monitor = "${monitor_primary}";
     };
 
     input = {
@@ -63,6 +66,11 @@
       snap.enabled = true;
     };
 
+    master = {
+      allow_small_split = true;
+      mfact = 0.67;
+    };
+
     decoration = {
       rounding = 12;
       dim_inactive = true;
@@ -72,7 +80,6 @@
     misc = {
       disable_splash_rendering = true;
       animate_manual_resizes = true;
-      animate_mouse_windowdragging = false;
     };
 
     binds = {
@@ -81,27 +88,30 @@
 
     bind =
       [
-        "$mod, Return, exec, alacritty"
-        "$mod, B, exec, com.google.Chrome"
-        "$mod, V, exec, code"
-        "$mod, F, exec, nautilus"
-        "$mod, M, exec, org.signal.Signal"
-        "$mod, K, exec, org.gnome.Calculator"
-        "$mod, A, exec, rofi -show drun -show-icons"
+        "SUPER, Return, exec, alacritty"
+        "SUPER, B, exec, com.google.Chrome"
+        "SUPER, V, exec, code"
+        "SUPER, F, exec, nautilus"
+        "SUPER, M, exec, org.signal.Signal"
+        "SUPER, K, exec, org.gnome.Calculator"
+        "SUPER, A, exec, rofi -show drun -show-icons"
 
-        "$mod, left, movefocus, l"
-        "$mod, right, movefocus, r"
-        "$mod, up, movefocus, u"
-        "$mod, down, movefocus, d"
+        "SUPER, left, movefocus, l"
+        "SUPER, right, movefocus, r"
+        "SUPER, up, movefocus, u"
+        "SUPER, down, movefocus, d"
 
-        "$mod CTRL, left, swapwindow, l"
-        "$mod CTRL, right, swapwindow, r"
-        "$mod CTRL, up, swapwindow, u"
-        "$mod CTRL, down, swapwindow, d"
+        "SUPER SHIFT, left, swapwindow, l"
+        "SUPER SHIFT, right, swapwindow, r"
+        "SUPER SHIFT, up, swapwindow, u"
+        "SUPER SHIFT, down, swapwindow, d"
 
-        "$mod, Q, killactive"
-        "$mod, slash, togglefloating"
-        "$mod, F11, fullscreen, 1"
+        "SUPER, TAB, layoutmsg, swapwithmaster"
+        "SUPER SHIFT, TAB, swapactiveworkspaces, ${monitor_primary} ${monitor_secondary}"
+
+        "SUPER, Q, killactive"
+        "SUPER, slash, togglefloating"
+        "SUPER, F11, fullscreen, 1"
         ", F11, fullscreen, 0"
       ]
       ++ (
@@ -110,42 +120,41 @@
             i: let
               ws = i + 1;
             in [
-              "$mod, code:1${toString i}, workspace, ${toString ws}"
-              "$mod CTRL, code:1${toString i}, movetoworkspace, ${toString ws}"
+              "SUPER, code:1${toString i}, workspace, ${toString ws}"
+              "SUPER SHIFT, code:1${toString i}, movetoworkspace, ${toString ws}"
             ]
           )
           9)
       );
 
     bindm = [
-      "$mod, mouse:272, movewindow"
-      "$mod, mouse:273, resizewindow"
+      "SUPER, mouse:272, movewindow"
+      "SUPER, mouse:273, resizewindow"
     ];
 
     bindc = [
-      "$mod, mouse:272, togglefloating"
+      "SUPER, mouse:272, togglefloating"
     ];
 
     # bindr = [
-    #   "$mod, SUPER_L, exec, rofi -show drun -show-icons"
+    #   "SUPER, SUPER_L, exec, rofi -show drun -show-icons"
     # ];
 
     bindl = [
       ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
       ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-      "$mod, F9, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-      "$mod, F12, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+      "SUPER, F9, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+      "SUPER, F12, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
     ];
 
     bindle = [
       ", XF86AudioLowerVolume, exec, wpctl set-volume -l '1.0' @DEFAULT_AUDIO_SINK@ 5%-"
       ", XF86AudioRaiseVolume, exec, wpctl set-volume -l '1.0' @DEFAULT_AUDIO_SINK@ 5%+"
-      "$mod, F10, exec, wpctl set-volume -l '1.0' @DEFAULT_AUDIO_SINK@ 5%-"
-      "$mod, F11, exec, wpctl set-volume -l '1.0' @DEFAULT_AUDIO_SINK@ 5%+"
+      "SUPER, F10, exec, wpctl set-volume -l '1.0' @DEFAULT_AUDIO_SINK@ 5%-"
+      "SUPER, F11, exec, wpctl set-volume -l '1.0' @DEFAULT_AUDIO_SINK@ 5%+"
     ];
 
     exec-once = [
-      # "hyprctl dispatch workspace 1"
       "waybar"
       "systemctl --user start hyprpolkitagent"
     ];

@@ -3,7 +3,7 @@ Version=1.0
 Name=OBS Studio
 GenericName=Streaming/Recording Software
 Comment=Free and Open Source Streaming/Recording Software
-Exec=/usr/bin/flatpak run com.obsproject.Studio --enable-gpu --enable-features=UseOzonePlatform,VaapiVideoDecoder,CanvasOopRasterization --enable-gpu-rasterization --enable-oop-rasterization --enable-accelerated-2d-canvas --enable-accelerated-video-decode --enable-gpu-composing --enable-zero-copy
+Exec=/usr/bin/env flatpak run com.obsproject.Studio --enable-gpu --enable-features=UseOzonePlatform,VaapiVideoDecoder,CanvasOopRasterization --enable-gpu-rasterization --enable-oop-rasterization --enable-accelerated-2d-canvas --enable-accelerated-video-decode --enable-gpu-composing --enable-zero-copy
 Icon=com.obsproject.Studio
 Terminal=false
 Type=Application

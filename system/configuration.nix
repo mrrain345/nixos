@@ -17,9 +17,20 @@
 
   programs.hyprland.enable = true;
 
+  services.gnome.gnome-keyring.enable = true;
+  services.gnome.gnome-settings-daemon.enable = true;
+
+  environment.systemPackages = with pkgs; [
+    glib
+  ];
+
   security.polkit.enable = true;
   xdg.portal.enable = true;
-  xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
+  xdg.portal.extraPortals = with pkgs; [
+    xdg-desktop-portal-hyprland
+    xdg-desktop-portal-wlr
+    xdg-desktop-portal-gtk
+  ];
 
   system.stateVersion = "24.11";
 }

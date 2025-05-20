@@ -32,5 +32,19 @@ in {
       intelBusId = "PCI:0:2:0";
       nvidiaBusId = "PCI:1:0:0";
     };
+
+    environment.systemPackages = with pkgs; [
+      libva-utils
+      vdpauinfo
+      vulkan-tools
+      vulkan-validation-layers
+      libvdpau-va-gl
+      egl-wayland
+      wgpu-utils
+      mesa
+      libglvnd
+      nvitop
+      libGL
+    ];
   };
 }

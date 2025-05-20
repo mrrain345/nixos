@@ -8,6 +8,14 @@
     inputs.nix-vscode-extensions.overlays.default
   ];
 
+  home.packages = with pkgs; [
+    nil
+    nixd
+    alejandra
+
+    nodejs
+  ];
+
   programs.vscode = {
     enable = true;
 
