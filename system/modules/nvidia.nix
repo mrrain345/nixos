@@ -14,6 +14,7 @@ in {
   config = lib.mkIf cfg.enable {
     hardware.graphics = {
       enable = true;
+      enable32Bit = true;
       extraPackages = with pkgs; [nvidia-vaapi-driver];
     };
 

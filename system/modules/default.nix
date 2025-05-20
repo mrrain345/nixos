@@ -5,6 +5,7 @@
     ./gnome.nix
     ./docker.nix
     ./stylix.nix
+    ./xdg.nix
   ];
 
   config = {

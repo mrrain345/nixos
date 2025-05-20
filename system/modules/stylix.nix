@@ -2,7 +2,8 @@
   stylix = {
     enable = true;
     image = ../../home/files/wallpaper.png;
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/tokyodark.yaml";
+    # https://tinted-theming.github.io/tinted-gallery/
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/da-one-ocean.yaml";
     polarity = "dark";
 
     fonts = {

@@ -11,5 +11,9 @@
 
   home.packages = with pkgs; [
     nautilus
+    gnome-text-editor
+    gnome-calculator
+
+    gnome-disk-utility
   ];
 }

@@ -5,11 +5,19 @@
 
   wayland.windowManager.hyprland.enable = true;
   services.network-manager-applet.enable = true;
+  services.blueman-applet.enable = true;
   services.gnome-keyring.enable = true;
   programs.waybar.enable = true;
 
+  programs.wofi = {
+    enable = true;
+    settings = {
+      mode = "drun";
+      allow_images = true;
+    };
+  };
+
   home.packages = with pkgs; [
-    rofi-wayland
     hyprpolkitagent
     networkmanagerapplet
     libsecret
@@ -93,8 +101,10 @@
         "SUPER, V, exec, code"
         "SUPER, F, exec, nautilus"
         "SUPER, M, exec, org.signal.Signal"
-        "SUPER, K, exec, org.gnome.Calculator"
-        "SUPER, A, exec, rofi -show drun -show-icons"
+        "SUPER, K, exec, gnome-calculator"
+        "SUPER, T, exec, gnome-text-editor"
+        "SUPER, A, exec, wofi"
+        # "SUPER, SUPER_L, exec, wofi"
 
         "SUPER, left, movefocus, l"
         "SUPER, right, movefocus, r"
@@ -113,6 +123,9 @@
         "SUPER, slash, togglefloating"
         "SUPER, F11, fullscreen, 1"
         ", F11, fullscreen, 0"
+
+        "CTRL ALT, left, workspace, r-1"
+        "CTRL ALT, right, workspace, r+1"
       ]
       ++ (
         # workspaces
@@ -135,10 +148,6 @@
     bindc = [
       "SUPER, mouse:272, togglefloating"
     ];
-
-    # bindr = [
-    #   "SUPER, SUPER_L, exec, rofi -show drun -show-icons"
-    # ];
 
     bindl = [
       ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"

@@ -22,14 +22,10 @@
 
     "io.bassi.Amberol"
     "io.github.celluloid_player.Celluloid"
-    "org.gnome.Calculator"
     "org.gnome.Calendar"
-    "org.gnome.clocks"
     "org.gnome.Evince"
     "org.gnome.Loupe"
     "org.gnome.Snapshot"
-    "org.gnome.TextEditor"
-    "org.gnome.Weather"
   ];
 
   home.file = {

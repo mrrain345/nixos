@@ -14,11 +14,7 @@
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    ...
-  } @ inputs: let
+  outputs = inputs: let
     system = "x86_64-linux";
   in {
     nixosConfigurations.nixos = inputs.nixpkgs.lib.nixosSystem {
@@ -29,7 +25,7 @@
         {
           nixpkgs.config.allowUnfree = true;
           nix.settings.experimental-features = "nix-command flakes";
-          nix.nixPath = ["nixpkgs=${nixpkgs.outPath}"];
+          nix.nixPath = ["nixpkgs=${inputs.nixpkgs.outPath}"];
         }
 
         inputs.home-manager.nixosModules.home-manager
