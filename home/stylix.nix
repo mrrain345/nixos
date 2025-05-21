@@ -74,5 +74,6 @@
     adwaita-fonts
     roboto
     inter
+    cantarell-fonts
   ];
 }

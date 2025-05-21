@@ -3,14 +3,14 @@
 in {
   wayland.windowManager.hyprland.settings = {
     bind = [
-      "SUPER, Return, exec, alacritty"
-      "SUPER, B, exec, com.google.Chrome"
-      "SUPER, V, exec, code"
-      "SUPER, F, exec, nautilus"
-      "SUPER, M, exec, org.signal.Signal"
-      "SUPER, K, exec, gnome-calculator"
-      "SUPER, T, exec, gnome-text-editor"
-      "SUPER, A, exec, wofi"
+      "SUPER, Return, exec, uwsm app -T"
+      "SUPER, B, exec, uwsm app -- com.google.Chrome"
+      "SUPER, V, exec, uwsm app -- code"
+      "SUPER, F, exec, uwsm app -- nautilus"
+      "SUPER, M, exec, uwsm app -- org.signal.Signal"
+      "SUPER, K, exec, uwsm app -- gnome-calculator"
+      "SUPER, T, exec, uwsm app -- gnome-text-editor"
+      "SUPER, A, exec, uwsm app -- \"$(wofi --show drun --define=drun-print_desktop_file=true | sed -E \"s/(\.desktop) /\1:/\")\""
 
       "SUPER, left, movefocus, l"
       "SUPER, right, movefocus, r"

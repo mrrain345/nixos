@@ -52,7 +52,13 @@
         bindkey "''${key[Up]}" up-line-or-search
         bindkey "''${key[Down]}" down-line-or-search
       '';
+
+      startUWSM = ''
+        if uwsm check may-start; then
+          exec uwsm start default
+        fi
+      '';
     in
-      lib.mkMerge [zshConfigFirst zshConfig];
+      lib.mkMerge [zshConfigFirst zshConfig startUWSM];
   };
 }

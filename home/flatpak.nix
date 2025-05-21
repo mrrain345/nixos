@@ -21,7 +21,7 @@
     "com.mojang.Minecraft"
 
     "io.bassi.Amberol"
-    "io.github.celluloid_player.Celluloid"
+    "org.gnome.Totem"
     "org.gnome.Calendar"
     "org.gnome.Evince"
     "org.gnome.Loupe"

@@ -6,6 +6,5 @@
     ./locale.nix
     ./pipewire.nix
     ./services.nix
-    ./xdg.nix
   ];
 }

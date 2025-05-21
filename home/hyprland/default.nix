@@ -6,9 +6,6 @@
     ./settings.nix
   ];
 
-  wayland.windowManager.hyprland.enable = true;
-  programs.waybar.enable = true;
-
   settings.hyprland.monitors = {
     primary = {
       name = "HDMI-A-4";
@@ -27,10 +24,15 @@
     };
   };
 
-  wayland.windowManager.hyprland.settings = {
-    exec-once = [
-      "waybar"
-      "systemctl --user start hyprpolkitagent"
-    ];
+  programs.waybar.enable = true;
+
+  wayland.windowManager.hyprland = {
+    enable = true;
+    settings = {
+      exec-once = [
+        "systemctl --user start hyprpolkitagent"
+        "waybar"
+      ];
+    };
   };
 }
