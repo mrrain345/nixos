@@ -7,19 +7,26 @@
   cfg = config.modules.nvidia;
 in {
   options.modules.nvidia = {
-    enable = lib.mkEnableOption "Enable nvidia drivers";
-    sync-mode = lib.mkEnableOption "Switch offload mode to sync mode";
+    sync-mode = lib.mkEnableOption "Switch from offload mode to sync mode";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = {
     hardware.graphics = {
       enable = true;
       enable32Bit = true;
-      extraPackages = with pkgs; [nvidia-vaapi-driver];
+      extraPackages = with pkgs; [
+        nvidia-vaapi-driver
+        libva
+        vaapiVdpau
+        libvdpau-va-gl
+        egl-wayland
+        mesa
+        libglvnd
+        libGL
+      ];
     };
 
     services.xserver.videoDrivers = ["nvidia"];
-
     hardware.nvidia.open = true;
     hardware.nvidia.modesetting.enable = true;
 
@@ -33,19 +40,5 @@ in {
       intelBusId = "PCI:0:2:0";
       nvidiaBusId = "PCI:1:0:0";
     };
-
-    environment.systemPackages = with pkgs; [
-      libva-utils
-      vdpauinfo
-      vulkan-tools
-      vulkan-validation-layers
-      libvdpau-va-gl
-      egl-wayland
-      wgpu-utils
-      mesa
-      libglvnd
-      nvitop
-      libGL
-    ];
   };
 }

@@ -2,6 +2,7 @@
   pkgs,
   lib,
   inputs,
+  config,
   ...
 }: {
   nixpkgs.overlays = [
@@ -56,29 +57,34 @@
         jnoortheen.nix-ide
       ];
 
-      userSettings = {
-        "debug.console.fontSize" = lib.mkForce 12;
-        "terminal.integrated.fontSize" = lib.mkForce 12;
-        "terminal.integrated.enablePersistentSessions" = false;
-        "editor.fontSize" = lib.mkForce 14;
-        "editor.tabSize" = 2;
-        "editor.renderWhitespace" = "trailing";
-        "editor.formatOnSave" = true;
+      userSettings = let
+        fonts = config.stylix.fonts;
+        fontSize = lib.mkForce (fonts.sizes.desktop * 4.0 / 3.0);
+        monospace = lib.mkForce "'${fonts.monospace.name}', monospace";
+      in {
+        "editor.fontSize" = fontSize;
+        "debug.console.fontSize" = fontSize;
+        "terminal.integrated.fontSize" = fontSize;
+        "chat.editor.fontSize" = fontSize;
+        "editor.inlineSuggest.fontFamily" = monospace;
+
         "editor.folding" = false;
         "editor.glyphMargin" = false;
-        "workbench.layoutControl.enabled" = false;
+        "editor.renderWhitespace" = "trailing";
         "window.menuBarVisibility" = "toggle";
+        "terminal.integrated.enablePersistentSessions" = false;
         "telemetry.telemetryLevel" = "off";
 
+        "editor.tabSize" = 2;
+        "editor.formatOnSave" = true;
         "git.confirmSync" = false;
         "git.autofetch" = true;
 
-        "github.copilot.enable" = {
-          "*" = true;
-          "yaml" = true;
-          "plaintext" = true;
-          "markdown" = true;
-        };
+        "notes.notesLocation" = "/home/mrrain/Dokumenty/Markdown";
+
+        "prettier.semi" = false;
+        "prettier.trailingComma" = "all";
+        "prettier.experimentalTernaries" = true;
 
         "[javascript]"."editor.defaultFormatter" = "esbenp.prettier-vscode";
         "[typescript]"."editor.defaultFormatter" = "esbenp.prettier-vscode";
@@ -86,14 +92,15 @@
         "[markdown]"."editor.defaultFormatter" = "esbenp.prettier-vscode";
         "[json]"."editor.defaultFormatter" = "esbenp.prettier-vscode";
 
-        "prettier.semi" = false;
-        "prettier.trailingComma" = "all";
-        "prettier.experimentalTernaries" = true;
-
-        "notes.notesLocation" = "/home/mrrain/Dokumenty/Markdown";
-
         "files.associations" = {
           "*.css" = "tailwindcss";
+        };
+
+        "github.copilot.enable" = {
+          "*" = true;
+          "yaml" = true;
+          "plaintext" = true;
+          "markdown" = true;
         };
 
         "nix.enableLanguageServer" = true;

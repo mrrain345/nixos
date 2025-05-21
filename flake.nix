@@ -23,6 +23,7 @@
 
       modules = [
         {
+          networking.hostName = "nixos";
           nixpkgs.config.allowUnfree = true;
           nix.settings.experimental-features = "nix-command flakes";
           nix.nixPath = ["nixpkgs=${inputs.nixpkgs.outPath}"];
@@ -32,7 +33,8 @@
         inputs.nix-flatpak.nixosModules.nix-flatpak
         inputs.stylix.nixosModules.stylix
 
-        ./system/configuration.nix
+        ./system
+        ./home
       ];
     };
   };

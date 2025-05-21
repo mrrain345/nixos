@@ -14,6 +14,7 @@
     gnome-text-editor
     gnome-calculator
 
+    seahorse
     gnome-disk-utility
   ];
 }

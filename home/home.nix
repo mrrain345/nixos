@@ -1,9 +1,9 @@
 {
   imports = [
-    ./env.nix
-    ./programs
-    ./flatpak.nix
     ./hyprland
+    ./programs
+    ./env.nix
+    ./flatpak.nix
   ];
 
   home = {

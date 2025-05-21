@@ -3,7 +3,9 @@
   inputs,
   ...
 }: {
-  programs.zsh.enable = true;
+  imports = [
+    ./stylix.nix
+  ];
 
   users.users.mrrain = {
     isNormalUser = true;
@@ -17,8 +19,11 @@
   };
 
   home-manager = {
+    users.mrrain = import ./home.nix;
     extraSpecialArgs = {inherit inputs;};
-    users.mrrain = import ../home/home.nix;
     useUserPackages = true;
   };
+
+  programs.zsh.enable = true;
+  programs.hyprland.enable = true;
 }

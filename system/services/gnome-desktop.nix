@@ -7,7 +7,7 @@
   cfg = config.modules.gnome;
 in {
   options.modules.gnome = {
-    enable = lib.mkEnableOption "Enable GNOME support";
+    enable = lib.mkEnableOption "Enable GNOME desktop environment";
   };
 
   config = lib.mkIf cfg.enable {
