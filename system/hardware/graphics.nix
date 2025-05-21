@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.nvidia;
+  cfg = config.settings.nvidia;
 in {
-  options.modules.nvidia = {
+  options.settings.nvidia = {
     sync-mode = lib.mkEnableOption "Switch from offload mode to sync mode";
   };
 

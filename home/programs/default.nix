@@ -1,9 +1,10 @@
 {pkgs, ...}: {
   imports = [
+    ./vscode
     ./git.nix
     ./nano.nix
     ./nh.nix
-    ./vscode.nix
+    ./wofi.nix
     ./zsh.nix
   ];
 

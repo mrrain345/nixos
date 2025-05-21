@@ -4,7 +4,7 @@
     ./services
   ];
 
-  modules = {
+  settings = {
     nvidia.sync-mode = false;
     gnome.enable = false;
   };
