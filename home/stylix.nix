@@ -2,13 +2,32 @@
   stylix = {
     enable = true;
     image = ./files/wallpaper.png;
-    # https://tinted-theming.github.io/tinted-gallery/
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/da-one-ocean.yaml";
     polarity = "dark";
+
+    # https://tinted-theming.github.io/tinted-gallery/
+    base16Scheme = {
+      base00 = "171726";
+      base01 = "22273d";
+      base02 = "374059";
+      base03 = "787C99";
+      base04 = "353945";
+      base05 = "a0a8cd";
+      base06 = "abb2bf";
+      base07 = "bcc2dc";
+      base08 = "ee6d85";
+      base09 = "f6955b";
+      base0A = "d7a65f";
+      base0B = "95c561";
+      base0C = "9fbbf3";
+      base0D = "7199ee";
+      base0E = "a485dd";
+      base0F = "773440";
+    };
 
     fonts = {
       serif = {
         package = pkgs.fira-go;
+
         name = "Fira Sans";
       };
       sansSerif = {
