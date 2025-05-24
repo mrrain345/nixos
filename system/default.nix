@@ -5,7 +5,7 @@
   ];
 
   settings = {
-    nvidia.sync-mode = false;
+    nvidia.sync-mode = true;
     gnome.enable = false;
   };
 

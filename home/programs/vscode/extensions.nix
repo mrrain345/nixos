@@ -33,9 +33,7 @@
       rvest.vs-code-prettier-eslint
 
       # Doker
-      jeff-hykin.better-dockerfile-syntax
-      docker.docker
-      ms-azuretools.vscode-docker
+      ms-azuretools.vscode-containers
 
       # Other
       qwtel.sqlite-viewer

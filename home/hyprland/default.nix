@@ -18,7 +18,7 @@
     secondary = {
       name = "eDP-1";
       resolution = "1920x1080";
-      refresh_rate = 144;
+      refresh_rate = 60;
       offset = "1920x0";
       scale = 1;
     };

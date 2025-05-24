@@ -9,8 +9,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    stylix = {
+      url = "github:danth/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
+
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
-    stylix.url = "github:danth/stylix";
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
 
