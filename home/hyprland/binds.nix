@@ -30,7 +30,7 @@ in {
 
       "SUPER, X, killactive"
       "SUPER, slash, togglefloating"
-      "SUPER, F11, fullscreen, 1"
+      "SUPER CTRL, F11, fullscreen, 1"
       ", F11, fullscreen, 0"
 
       "SUPER CTRL, left, workspace, r-1"

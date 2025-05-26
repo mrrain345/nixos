@@ -1,0 +1,38 @@
+@use "../../colors";
+
+$bg-color: colors.$bg-alt;
+$fg-color: colors.$fg;
+$accent-color: colors.$accent;
+
+window.OSD {
+  box.OSD {
+    border-radius: 100px;
+    color: $fg-color;
+    background-color: $bg-color;
+    padding: 12px 16px;
+    margin: 14px;
+    box-shadow: 3px 3px 7px 0 rgba(0,0,0,.4);
+  }
+
+  icon {
+    font-size: 2rem;
+  }
+
+  label {
+    font-size: 1rem;
+    font-weight: bold;
+    min-width: 2.6rem;
+  }
+
+  levelbar {
+    trough {
+      margin: .4rem .6rem;
+      min-width: 8rem;
+      background-color: colors.$base02;
+    }
+
+    block {
+      min-height: 0.8rem;
+    }
+  }
+}

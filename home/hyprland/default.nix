@@ -24,14 +24,12 @@
     };
   };
 
-  programs.waybar.enable = true;
-
   wayland.windowManager.hyprland = {
     enable = true;
     settings = {
       exec-once = [
         "systemctl --user start hyprpolkitagent"
-        "waybar"
+        "ags-shell"
       ];
     };
   };

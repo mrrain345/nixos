@@ -2,7 +2,6 @@ import { App } from "astal/gtk3"
 import { Variable, GLib, bind } from "astal"
 import { Astal, Gtk, Gdk } from "astal/gtk3"
 import Hyprland from "gi://AstalHyprland"
-import Mpris from "gi://AstalMpris"
 import Battery from "gi://AstalBattery"
 import Wp from "gi://AstalWp"
 import Network from "gi://AstalNetwork"
@@ -14,15 +13,26 @@ function SysTray() {
   return (
     <box className="SysTray">
       {bind(tray, "items").as((items) =>
-        items.map((item) => (
-          <menubutton
-            tooltipMarkup={bind(item, "tooltipMarkup")}
-            usePopover={false}
-            actionGroup={bind(item, "actionGroup").as((ag) => ["dbusmenu", ag])}
-            menuModel={bind(item, "menuModel")}
-            child={<icon gicon={bind(item, "gicon")} />}
-          />
-        )),
+        items.map((item) =>
+          item.isMenu ?
+            <menubutton
+              tooltipMarkup={bind(item, "tooltipMarkup")}
+              usePopover={false}
+              actionGroup={bind(item, "actionGroup").as((ag) => [
+                "dbusmenu",
+                ag,
+              ])}
+              menuModel={bind(item, "menuModel")}
+              child={<icon gicon={bind(item, "gicon")} />}
+            />
+          : <button
+              tooltipMarkup={bind(item, "tooltipMarkup")}
+              onClick={(e) => {
+                item.activate(0, 0)
+              }}
+              child={<icon gicon={bind(item, "gicon")} />}
+            />,
+        ),
       )}
     </box>
   )
@@ -38,7 +48,7 @@ function Wifi() {
         (wifi) =>
           wifi && [
             <icon
-              tooltipText={bind(wifi, "ssid").as(String)}
+              tooltipText={bind(wifi, "ssid").as((ssid) => `Wi-Fi: ${ssid}`)}
               className="Wifi"
               icon={bind(wifi, "iconName")}
             />,
@@ -52,14 +62,23 @@ function AudioSlider() {
   const speaker = Wp.get_default()?.audio.defaultSpeaker!
 
   return (
-    <box className="AudioSlider" css="min-width: 140px">
-      <icon icon={bind(speaker, "volumeIcon")} />
-      <slider
-        hexpand
-        onDragged={({ value }) => (speaker.volume = value)}
-        value={bind(speaker, "volume")}
-      />
-    </box>
+    <eventbox
+      className="AudioSlider"
+      // onScroll={(e) => print(e)}
+      child={
+        <icon
+          icon={bind(speaker, "volumeIcon")}
+          tooltipText={bind(speaker, "volume").as(
+            (v) => `Volume: ${Math.round(v * 100)}%`,
+          )}
+        />
+      }
+    />
+    // {/* <slider
+    //   hexpand
+    //   onDragged={({ value }) => (speaker.volume = value)}
+    //   value={bind(speaker, "volume")}
+    // /> */}
   )
 }
 
@@ -68,49 +87,27 @@ function BatteryLevel() {
 
   return (
     <box className="Battery" visible={bind(bat, "isPresent")}>
-      <icon icon={bind(bat, "batteryIconName")} />
-      <label
-        label={bind(bat, "percentage").as((p) => `${Math.floor(p * 100)} %`)}
-      />
+      {[
+        <icon
+          icon={bind(bat, "batteryIconName")}
+          tooltipText={bind(bat, "percentage").as(
+            (p) => `Battery: ${Math.floor(p * 100)}%`,
+          )}
+        />,
+      ]}
     </box>
   )
 }
 
-function Media() {
-  const mpris = Mpris.get_default()
-
-  return (
-    <box className="Media">
-      {bind(mpris, "players").as((ps) => [
-        ps[0] ?
-          <box>
-            <box
-              className="Cover"
-              valign={Gtk.Align.CENTER}
-              css={bind(ps[0], "coverArt").as(
-                (cover) => `background-image: url('${cover}');`,
-              )}
-            />
-            <label
-              label={bind(ps[0], "metadata").as(
-                () => `${ps[0].title} - ${ps[0].artist}`,
-              )}
-            />
-          </box>
-        : <label label="Nothing Playing" />,
-      ])}
-    </box>
-  )
-}
-
-function Workspaces() {
+function Workspaces(props: { monitor: number }) {
   const hypr = Hyprland.get_default()
 
   return (
     <box className="Workspaces">
       {bind(hypr, "workspaces").as((wss) =>
         wss
-          .filter((ws) => !(ws.id >= -99 && ws.id <= -2)) // filter out special workspaces
+          // .filter((ws) => !(ws.id >= -99 && ws.id <= -2)) // filter out special workspaces
+          .filter((ws) => ws.monitor.id === props.monitor)
           .sort((a, b) => a.id - b.id)
           .map((ws) => (
             <button
@@ -126,20 +123,6 @@ function Workspaces() {
   )
 }
 
-function FocusedClient() {
-  const hypr = Hyprland.get_default()
-  const focused = bind(hypr, "focusedClient")
-
-  return (
-    <box className="Focused" visible={focused.as(Boolean)}>
-      {focused.as(
-        (client) =>
-          client && [<label label={bind(client, "title").as(String)} />],
-      )}
-    </box>
-  )
-}
-
 function Time({ format = "%d.%m.%Y - %H:%M" }) {
   const time = Variable<string>("").poll(
     1000,
@@ -149,26 +132,28 @@ function Time({ format = "%d.%m.%Y - %H:%M" }) {
   return <label className="Time" onDestroy={() => time.drop()} label={time()} />
 }
 
-export default function Bar(monitor: Gdk.Monitor) {
+export default function Topbar(monitor: Gdk.Monitor, index: number) {
   const { TOP, LEFT, RIGHT } = Astal.WindowAnchor
 
   return (
     <window
-      className="Bar"
+      className="Topbar"
       gdkmonitor={monitor}
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
       anchor={TOP | LEFT | RIGHT}
       child={
         <centerbox>
           <box hexpand halign={Gtk.Align.START}>
-            {[<Workspaces />]}
+            {[<Workspaces monitor={index} />]}
           </box>
           <box>{[<Time />]}</box>
-          <box hexpand halign={Gtk.Align.END}>
+          <box hexpand halign={Gtk.Align.END} marginEnd={12}>
             <SysTray />
-            <Wifi />
-            <AudioSlider />
-            <BatteryLevel />
+            <box className="RightIcons">
+              <Wifi />
+              <AudioSlider />
+              <BatteryLevel />
+            </box>
           </box>
         </centerbox>
       }
