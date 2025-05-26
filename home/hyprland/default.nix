@@ -1,4 +1,8 @@
 {
+  pkgs,
+  inputs,
+  ...
+}: {
   imports = [
     ./modules
     ./binds.nix
@@ -23,6 +27,11 @@
       scale = 1;
     };
   };
+
+  home.packages = with pkgs; [
+    inputs.ags-shell.packages.${pkgs.system}.default
+    hyprnome
+  ];
 
   wayland.windowManager.hyprland = {
     enable = true;

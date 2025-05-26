@@ -1,8 +1,4 @@
-{
-  pkgs,
-  inputs,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     ./vscode
     ./git.nix
@@ -21,7 +17,5 @@
 
     seahorse
     gnome-disk-utility
-
-    inputs.my-shell.packages.${pkgs.system}.default
   ];
 }

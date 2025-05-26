@@ -4,7 +4,7 @@
       "inputs": {
         "astal": "astal",
         "nixpkgs": [
-          "my-shell",
+          "ags-shell",
           "nixpkgs"
         ]
       },
@@ -22,10 +22,27 @@
         "type": "github"
       }
     },
+    "ags-shell": {
+      "inputs": {
+        "ags": "ags",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "ags",
+        "type": "path"
+      },
+      "original": {
+        "path": "ags",
+        "type": "path"
+      },
+      "parent": []
+    },
     "astal": {
       "inputs": {
         "nixpkgs": [
-          "my-shell",
+          "ags-shell",
           "ags",
           "nixpkgs"
         ]
@@ -282,23 +299,6 @@
         "type": "github"
       }
     },
-    "my-shell": {
-      "inputs": {
-        "ags": "ags",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "path": "ags",
-        "type": "path"
-      },
-      "original": {
-        "path": "ags",
-        "type": "path"
-      },
-      "parent": []
-    },
     "nix-flatpak": {
       "locked": {
         "lastModified": 1739444422,
@@ -394,8 +394,8 @@
     },
     "root": {
       "inputs": {
+        "ags-shell": "ags-shell",
         "home-manager": "home-manager",
-        "my-shell": "my-shell",
         "nix-flatpak": "nix-flatpak",
         "nix-vscode-extensions": "nix-vscode-extensions",
         "nixpkgs": "nixpkgs_2",

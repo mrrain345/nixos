@@ -18,7 +18,7 @@
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
 
-    my-shell = {
+    ags-shell = {
       url = ./ags;
       inputs.nixpkgs.follows = "nixpkgs";
     };
