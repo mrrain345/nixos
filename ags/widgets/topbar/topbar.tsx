@@ -27,10 +27,8 @@ function SysTray() {
             />
           : <button
               tooltipMarkup={bind(item, "tooltipMarkup")}
-              onClick={(e) => {
-                item.activate(0, 0)
-              }}
               child={<icon gicon={bind(item, "gicon")} />}
+              onClicked={() => item.activate(0, 0)}
             />,
         ),
       )}
@@ -58,27 +56,43 @@ function Wifi() {
   )
 }
 
-function AudioSlider() {
-  const speaker = Wp.get_default()?.audio.defaultSpeaker!
+function AudioIcon() {
+  const speaker = Wp.get_default()?.audio.defaultSpeaker
+  const iconName = Variable("audio-volume-high-symbolic")
 
+  function getIconName() {
+    if (!speaker) return "audio-volume-muted-symbolic"
+    if (speaker.mute || speaker.volume === 0) {
+      return "audio-volume-muted-symbolic"
+    } else {
+      return speaker.volumeIcon.replace(
+        /^microphone-sensitivity-/,
+        "audio-volume-",
+      )
+    }
+  }
+
+  if (!speaker) return null
   return (
     <eventbox
-      className="AudioSlider"
-      // onScroll={(e) => print(e)}
+      className="AudioIcon"
+      setup={(self) => {
+        self.hook(speaker, "notify::mute", () => iconName.set(getIconName()))
+        self.hook(speaker, "notify::volume", () => iconName.set(getIconName()))
+      }}
+      onScroll={(self, ev) => {
+        const dir = ev.delta_y < 0 ? -1 : 1
+        speaker.volume = speaker.volume + dir * 0.01
+      }}
       child={
         <icon
-          icon={bind(speaker, "volumeIcon")}
+          icon={iconName()}
           tooltipText={bind(speaker, "volume").as(
             (v) => `Volume: ${Math.round(v * 100)}%`,
           )}
         />
       }
     />
-    // {/* <slider
-    //   hexpand
-    //   onDragged={({ value }) => (speaker.volume = value)}
-    //   value={bind(speaker, "volume")}
-    // /> */}
   )
 }
 
@@ -106,7 +120,6 @@ function Workspaces(props: { monitor: number }) {
     <box className="Workspaces">
       {bind(hypr, "workspaces").as((wss) =>
         wss
-          // .filter((ws) => !(ws.id >= -99 && ws.id <= -2)) // filter out special workspaces
           .filter((ws) => ws.monitor.id === props.monitor)
           .sort((a, b) => a.id - b.id)
           .map((ws) => (
@@ -147,11 +160,11 @@ export default function Topbar(monitor: Gdk.Monitor, index: number) {
             {[<Workspaces monitor={index} />]}
           </box>
           <box>{[<Time />]}</box>
-          <box hexpand halign={Gtk.Align.END} marginEnd={12}>
+          <box hexpand halign={Gtk.Align.END}>
             <SysTray />
             <box className="RightIcons">
               <Wifi />
-              <AudioSlider />
+              <AudioIcon />
               <BatteryLevel />
             </box>
           </box>

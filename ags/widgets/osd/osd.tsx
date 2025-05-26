@@ -3,16 +3,21 @@ import { timeout } from "astal/time"
 import Variable from "astal/variable"
 import Brightness from "./brightness"
 import Wp from "gi://AstalWp"
+import GLib from "gi://GLib?version=2.0"
 
 function OnScreenProgress({ visible }: { visible: Variable<boolean> }) {
   const brightness = Brightness.get_default()
-  const speaker = Wp.get_default()!.get_default_speaker()
+  const speaker = Wp.get_default()?.get_default_speaker()
 
   const iconName = Variable("")
   const value = Variable(0)
+  const initialTime = GLib.get_monotonic_time()
 
   let count = 0
   function show(v: number, icon: string) {
+    const time = GLib.get_monotonic_time()
+    if (time - initialTime < 200_000) return
+
     visible.set(true)
     value.set(v)
     iconName.set(icon)
@@ -23,6 +28,18 @@ function OnScreenProgress({ visible }: { visible: Variable<boolean> }) {
     })
   }
 
+  function getVolumeIconName() {
+    if (!speaker) return "audio-volume-muted-symbolic"
+    if (speaker.mute || speaker.volume === 0) {
+      return "audio-volume-muted-symbolic"
+    } else {
+      return speaker.volumeIcon.replace(
+        /^microphone-sensitivity-/,
+        "audio-volume-",
+      )
+    }
+  }
+
   return (
     <revealer
       setup={(self) => {
@@ -31,9 +48,14 @@ function OnScreenProgress({ visible }: { visible: Variable<boolean> }) {
         )
 
         if (speaker) {
-          self.hook(speaker, "notify::volume", () =>
-            show(speaker.volume, speaker.volumeIcon),
-          )
+          self.hook(speaker, "notify::mute", () => {
+            const volume = speaker.mute ? 0 : speaker.volume
+            show(volume, getVolumeIconName())
+          })
+          self.hook(speaker, "notify::volume", () => {
+            if (speaker.mute) speaker.set_mute(false)
+            show(speaker.volume, getVolumeIconName())
+          })
         }
       }}
       revealChild={visible()}
@@ -63,7 +85,6 @@ export default function OSD(monitor: Gdk.Monitor) {
       namespace="osd"
       application={App}
       layer={Astal.Layer.OVERLAY}
-      keymode={Astal.Keymode.ON_DEMAND}
       anchor={Astal.WindowAnchor.TOP}
       child={
         <eventbox
