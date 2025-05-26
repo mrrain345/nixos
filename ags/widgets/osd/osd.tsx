@@ -4,6 +4,8 @@ import Variable from "astal/variable"
 import Brightness from "./brightness"
 import Wp from "gi://AstalWp"
 import GLib from "gi://GLib?version=2.0"
+import Hyprland from "gi://AstalHyprland"
+import { bind } from "astal"
 
 function OnScreenProgress({ visible }: { visible: Variable<boolean> }) {
   const brightness = Brightness.get_default()
@@ -15,6 +17,7 @@ function OnScreenProgress({ visible }: { visible: Variable<boolean> }) {
 
   let count = 0
   function show(v: number, icon: string) {
+    // Don't show on application startup
     const time = GLib.get_monotonic_time()
     if (time - initialTime < 200_000) return
 
@@ -59,7 +62,6 @@ function OnScreenProgress({ visible }: { visible: Variable<boolean> }) {
         }
       }}
       revealChild={visible()}
-      transitionType={Gtk.RevealerTransitionType.SLIDE_UP}
       child={
         <box className="OSD">
           <icon icon={iconName()} />
@@ -75,12 +77,14 @@ function OnScreenProgress({ visible }: { visible: Variable<boolean> }) {
   )
 }
 
-export default function OSD(monitor: Gdk.Monitor) {
+export default function OSD() {
   const visible = Variable(false)
+  const hypr = Hyprland.get_default()
+  const focused = bind(hypr, "focusedMonitor")
 
   return (
     <window
-      gdkmonitor={monitor}
+      monitor={focused.as((m) => m.id)}
       className="OSD"
       namespace="osd"
       application={App}
