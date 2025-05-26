@@ -1,5 +1,10 @@
-{config, ...}: let
+{
+  config,
+  lib,
+  ...
+}: let
   monitors = config.settings.hyprland.monitors;
+  color = base: lib.mkForce "rgb(${config.lib.stylix.colors.${base}})";
 in {
   wayland.windowManager.hyprland.settings = {
     cursor = {
@@ -10,6 +15,10 @@ in {
     input = {
       kb_layout = "pl";
     };
+
+    general."col.inactive_border" = color "base02";
+    group."col.border_inactive" = color "base02";
+    group.groupbar."col.inactive" = color "base02";
 
     general = {
       border_size = 2;

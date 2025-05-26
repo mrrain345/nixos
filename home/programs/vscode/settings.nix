@@ -7,16 +7,24 @@
     userSettings = let
       fonts = config.stylix.fonts;
       fontSize = lib.mkForce (fonts.sizes.desktop * 4.0 / 3.0);
+      bigFontSize = lib.mkForce (fonts.sizes.applications * 4.0 / 3.0);
       monospace = lib.mkForce "'${fonts.monospace.name}', monospace";
       sansSerif = lib.mkForce "'${fonts.sansSerif.name}', sans-serif";
     in {
       "editor.fontSize" = fontSize;
       "debug.console.fontSize" = fontSize;
+      "markdown.preview.fontSize" = bigFontSize;
       "terminal.integrated.fontSize" = fontSize;
       "chat.editor.fontSize" = fontSize;
       "scm.inputFontSize" = fontSize;
-      "scm.inputFontFamily" = sansSerif;
+
+      "editor.fontFamily" = monospace;
+      "editor.inlayHints.fontFamily" = monospace;
       "editor.inlineSuggest.fontFamily" = monospace;
+      "scm.inputFontFamily" = sansSerif;
+      "debug.console.fontFamily" = monospace;
+      "markdown.preview.fontFamily" = sansSerif;
+      "chat.editor.fontFamily" = monospace;
 
       "editor.folding" = false;
       "editor.glyphMargin" = false;
@@ -30,7 +38,7 @@
       "git.confirmSync" = false;
       "git.autofetch" = true;
 
-      "notes.notesLocation" = "/home/mrrain/Dokumenty/Markdown";
+      "notes.notesLocation" = "/home/mrrain/Documents/Markdown";
 
       "prettier.semi" = false;
       "prettier.trailingComma" = "all";

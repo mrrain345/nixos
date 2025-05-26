@@ -8,6 +8,7 @@
     ./binds.nix
     ./monitors.nix
     ./settings.nix
+    ./window-rules.nix
   ];
 
   settings.hyprland.monitors = {
