@@ -11,7 +11,7 @@ in {
       "SUPER, M, exec, uwsm app -- org.signal.Signal"
       "SUPER, K, exec, uwsm app -- gnome-calculator"
       "SUPER, T, exec, uwsm app -- gnome-text-editor"
-      "SUPER, A, exec, uwsm app -- \"$(wofi --show drun --define=drun-print_desktop_file=true | sed -E \"s/(\.desktop) /\1:/\")\""
+      "SUPER, A, exec, uwsm app -- $(astal launcher)"
 
       # Move focus
       "SUPER, left, movefocus, l"

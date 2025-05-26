@@ -1,4 +1,3 @@
-import { App } from "astal/gtk3"
 import { Variable, GLib, bind } from "astal"
 import { Astal, Gtk, Gdk } from "astal/gtk3"
 import Hyprland from "gi://AstalHyprland"
@@ -159,7 +158,7 @@ export default function Topbar(monitor: Gdk.Monitor, index: number) {
           <box hexpand halign={Gtk.Align.START}>
             {[<Workspaces monitor={index} />]}
           </box>
-          <box>{[<Time />]}</box>
+          <box child={<Time />} />
           <box hexpand halign={Gtk.Align.END}>
             <SysTray />
             <box className="RightIcons">

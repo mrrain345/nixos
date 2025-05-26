@@ -31,6 +31,7 @@
 
   home.packages = with pkgs; [
     inputs.ags-shell.packages.${pkgs.system}.default
+    astal.io
     hyprnome
   ];
 

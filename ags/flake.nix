@@ -35,7 +35,6 @@
           notifd
           powerprofiles
           tray
-          mpris
           wireplumber
 
           pkgs.brightnessctl
