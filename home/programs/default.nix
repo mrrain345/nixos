@@ -4,7 +4,6 @@
     ./git.nix
     ./nano.nix
     ./nh.nix
-    ./wofi.nix
     ./zsh.nix
   ];
 

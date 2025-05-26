@@ -3,7 +3,6 @@ import style from "./style.scss"
 import Topbar from "./widgets/topbar/topbar"
 import OSD from "./widgets/osd/osd"
 import Applauncher, { launcher } from "./widgets/applauncher/applauncher"
-import { execAsync } from "astal"
 
 App.start({
   css: style,

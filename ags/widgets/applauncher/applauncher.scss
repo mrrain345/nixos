@@ -1,48 +1,49 @@
-@use "sass:string";
 @use "../../colors";
 
-
-@function gtkalpha($c, $a) {
-  @return string.unquote("alpha(#{$c},#{$a})");
-}
-
-$bg-color: colors.$bg-alt;
+$bg-color: colors.$bg;
+$bg-alt: colors.$bg-alt;
 $fg-color: colors.$fg;
 $accent-color: colors.$accent;
+$accent-muted: colors.$accent-muted;
+$box-shadow: colors.$box-shadow;
 
 window#launcher {
   all: unset;
 
-  box.Applauncher {
-    background-color: $bg-color;
+  .Applauncher {
+    background-color: $bg-alt;
     border-radius: 11px;
     margin: 1rem;
     padding: .8rem;
     padding-right: .2rem;
-    box-shadow: 2px 3px 8px 0 gtkalpha(black, .4);
+    box-shadow: $box-shadow;
 
-    entry.Search {
+    .Search {
       margin-bottom: .8rem;
       margin-right: .6rem;
+      background-color: $bg-color;
+      color: $fg-color;
     }
 
-    button {
+    .AppButton {
       min-width: 0;
       min-height: 0;
       padding: .5rem;
+      background-color: $bg-color;
 
       icon {
         font-size: 3em;
-        margin-right: .3rem;
+        margin-right: .5rem;
       }
 
       label.name {
         font-weight: bold;
-        font-size: 1.1em
+        font-size: 1.1em;
       }
 
       label.description {
-        color: gtkalpha($fg-color, .8);
+        color: $accent-muted;
+        font-size: 0.9em;
       }
     }
 
@@ -56,16 +57,16 @@ window#launcher {
       }
     }
 
-    box.not-found {
+    .not-found {
       padding: 1rem;
 
       icon {
         font-size: 6em;
-        color: gtkalpha($fg-color, .7);
+        color: $accent-muted;
       }
 
       label {
-        color: gtkalpha($fg-color, .9);
+        color: $accent-muted;
         font-size: 1.2em;
       }
     }
