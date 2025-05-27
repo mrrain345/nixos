@@ -1,7 +1,8 @@
 import Apps from "gi://AstalApps"
 import { App, Astal, Gdk, Gtk } from "astal/gtk3"
-import { Variable } from "astal"
+import { bind, Variable } from "astal"
 import { Scrollable } from "astal/gtk3/widget"
+import Hyprland from "gi://AstalHyprland"
 
 let _launcher: Gtk.Window | null = null
 let _launch: ((app: Apps.Application | null) => void) | null = null
@@ -13,27 +14,14 @@ export function launcher(launch: (app: Apps.Application | null) => void) {
   _launcher?.show()
 }
 
-// Close the launcher
-function hide() {
-  if (_launch) _launch(null)
-  _launch = null
-  _launcher?.hide()
-}
-
-// Launch the application
-function launch(app: Apps.Application | null) {
-  if (_launch) _launch(app)
-  else app?.launch()
-  _launch = null
-  _launcher?.hide()
-}
-
 function AppButton({
   app,
   setFocused,
+  launch,
 }: {
   app: Apps.Application
   setFocused: (app: Apps.Application) => void
+  launch: (app: Apps.Application | null) => void
 }) {
   return (
     <button
@@ -64,6 +52,9 @@ export default function Applauncher() {
   const apps = new Apps.Apps()
   const width = Variable(1000)
 
+  const hypr = Hyprland.get_default()
+  const monitor = bind(hypr, "focusedMonitor")
+
   let search: Gtk.Entry | null = null
   let scrollable: Scrollable | null = null
   let focused: Apps.Application | null = null
@@ -83,9 +74,28 @@ export default function Applauncher() {
   const text = Variable("")
   const list = text((text) => getApps(text))
 
+  function reset() {
+    text.set("")
+    focused = null
+    scrollable?.get_vadjustment().set_value(0)
+    search?.grab_focus_without_selecting()
+
+    if (_launch) _launch(null)
+    _launch = null
+    _launcher?.hide()
+  }
+
+  function launch(app: Apps.Application | null) {
+    if (_launch) _launch(app)
+    else app?.launch()
+    _launch = null
+    reset()
+  }
+
   return (
     <window
       name="launcher"
+      monitor={monitor.as((m) => m.id)}
       setup={(self) => {
         _launcher = self
         self.hide()
@@ -95,21 +105,16 @@ export default function Applauncher() {
       keymode={Astal.Keymode.ON_DEMAND}
       application={App}
       onShow={(self) => {
-        text.set("")
-        focused = null
-        scrollable?.get_vadjustment().set_value(0)
-        search?.grab_focus_without_selecting()
         width.set(self.get_current_monitor().workarea.width)
       }}
       onKeyPressEvent={(self, ev) => {
-        const [_, key] = ev.get_keyval()
-        if (key === Gdk.KEY_Escape) hide()
+        if (ev.get_keyval()[1] === Gdk.KEY_Escape) reset()
       }}
       child={
         <box>
-          <eventbox widthRequest={width((w) => w / 2)} expand onClick={hide} />
+          <eventbox widthRequest={width((w) => w / 2)} expand onClick={reset} />
           <box hexpand={false} vertical>
-            <eventbox heightRequest={100} onClick={hide} />
+            <eventbox heightRequest={100} onClick={reset} />
             <box widthRequest={500} className="Applauncher" vertical>
               <entry
                 className="Search"
@@ -122,8 +127,7 @@ export default function Applauncher() {
                   scrollable?.get_vadjustment().set_value(0)
                 }}
                 onKeyPressEvent={(self, ev) => {
-                  const [_, keyval] = ev.get_keyval()
-                  if (keyval === Gdk.KEY_Return) {
+                  if (ev.get_keyval()[1] === Gdk.KEY_Return) {
                     launch(focused ?? getApps(text.get())[0])
                   }
                 }}
@@ -131,7 +135,8 @@ export default function Applauncher() {
               <scrollable
                 className="AppList"
                 setup={(self) => (scrollable = self)}
-                heightRequest={list.as((l) => (l.length ? 465 : 160))}
+                heightRequest={465}
+                visible={list.as((l) => l.length > 0)}
                 onKeyPressEvent={(self, ev) => {
                   const [_, keyval] = ev.get_keyval()
                   const code = Gdk.keyval_to_unicode(keyval)
@@ -152,32 +157,31 @@ export default function Applauncher() {
                   focused = null
                 }}
                 child={
-                  <box vertical>
-                    <box spacing={6} vertical className="AppListContent">
-                      {list.as((list) =>
-                        list.map((app) => (
-                          <AppButton
-                            app={app}
-                            setFocused={(a) => (focused = a)}
-                          />
-                        )),
-                      )}
-                    </box>
-                    <box
-                      className="not-found"
-                      vertical
-                      visible={list.as((l) => l.length === 0)}
-                    >
-                      <icon icon="system-search-symbolic" />
-                      <label label="No match found" />
-                    </box>
+                  <box spacing={6} vertical className="AppListContent">
+                    {list.as((list) =>
+                      list.map((app) => (
+                        <AppButton
+                          app={app}
+                          setFocused={(a) => (focused = a)}
+                          launch={launch}
+                        />
+                      )),
+                    )}
                   </box>
                 }
               />
+              <box
+                className="not-found"
+                vertical
+                visible={list.as((l) => l.length === 0)}
+              >
+                <icon icon="system-search-symbolic" />
+                <label label="No match found" />
+              </box>
             </box>
-            <eventbox expand onClick={hide} />
+            <eventbox expand onClick={reset} />
           </box>
-          <eventbox widthRequest={width((w) => w / 2)} expand onClick={hide} />
+          <eventbox widthRequest={width((w) => w / 2)} expand onClick={reset} />
         </box>
       }
     />
